@@ -37,7 +37,7 @@ async def translate_text(request: TranslationRequest):
 
     transliterated_text = pipeline_output["transliterated_text"]
 
-    translated_output = f"Translated: {processed_text}"
+    translated_output = pipeline_output["translated_text"]
 
     processing_time = round(time.time() - start_time, 4)
 
