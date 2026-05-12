@@ -32,3 +32,5 @@ class TranslationResponse(BaseModel):
     target_language: str
 
     processing_time: float
+
+    transliterated_text: str
