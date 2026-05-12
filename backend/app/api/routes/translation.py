@@ -29,7 +29,11 @@ async def translate_text(request: TranslationRequest):
 
     logger.info("Translation request received")
 
-    processed_text = pipeline.run(request.text)
+    pipeline_output = pipeline.run(request.text)
+
+    processed_text = pipeline_output["processed_text"]
+
+    detected_language = pipeline_output["detected_language"]
 
     translated_output = f"Translated: {processed_text}"
 
@@ -38,7 +42,7 @@ async def translate_text(request: TranslationRequest):
     return TranslationResponse(
         original_text=request.text,
         translated_text=translated_output,
-        detected_language=request.source_language,
+        detected_language=detected_language,
         target_language=request.target_language,
         processing_time=processing_time
     )
