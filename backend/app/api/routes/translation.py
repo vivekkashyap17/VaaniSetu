@@ -36,6 +36,8 @@ async def translate_text(request: TranslationRequest):
         pipeline.run,
         request.text
 )
+    
+
     processed_text = pipeline_output["processed_text"]
 
     detected_language = pipeline_output["detected_language"]
@@ -44,6 +46,8 @@ async def translate_text(request: TranslationRequest):
 
     translated_output = pipeline_output["translated_text"]
 
+    confidence_score = pipeline_output["confidence_score"]
+
     processing_time = round(time.time() - start_time, 4)
 
     return TranslationResponse(
@@ -51,6 +55,7 @@ async def translate_text(request: TranslationRequest):
         translated_text=translated_output,
         transliterated_text=transliterated_text,
         detected_language=detected_language,
+        confidence_score=confidence_score,
         target_language=request.target_language,
         processing_time=processing_time
     )

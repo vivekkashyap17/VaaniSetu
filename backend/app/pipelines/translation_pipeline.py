@@ -10,6 +10,8 @@ from app.services.language_detection.language_mapper import LanguageMapper
 
 from app.core.cache.cache_manager import CacheManager
 
+from app.services.evaluation.quality_evaluator import QualityEvaluator
+
 
 class TranslationPipeline:
 
@@ -25,6 +27,8 @@ class TranslationPipeline:
         self.translator = IndicTranslator()
 
         self.language_mapper = LanguageMapper()
+
+        self.quality_evaluator = QualityEvaluator()
 
 
     def run(self, text: str):
@@ -106,11 +110,17 @@ class TranslationPipeline:
                     cache_key,
                     translated_text
                 )
-
+        confidence_score = (
+    self.quality_evaluator.evaluate_translation_confidence(
+        transliterated_text,
+        translated_text
+    )
+)
 
         return {
             "processed_text": processed_text,
             "detected_language": detected_language,
             "transliterated_text": transliterated_text,
-            "translated_text": translated_text
+            "translated_text": translated_text,
+            "confidence_score": confidence_score
         }
