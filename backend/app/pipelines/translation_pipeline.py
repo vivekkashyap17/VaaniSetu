@@ -8,6 +8,8 @@ from app.services.translation.indic_translator import IndicTranslator
 
 from app.services.language_detection.language_mapper import LanguageMapper
 
+from app.core.cache.cache_manager import CacheManager
+
 
 class TranslationPipeline:
 
@@ -61,6 +63,18 @@ class TranslationPipeline:
         )
 
 
+        cache_key = CacheManager.generate_cache_key(
+            transliterated_text,
+            "english"
+        )
+
+        cached_translation = (
+            CacheManager.get_cached_translation(
+                cache_key
+            )
+        )
+
+
         if detected_language in [
             "hindi",
             "roman_hindi",
@@ -72,11 +86,26 @@ class TranslationPipeline:
             "punjabi"
         ]:
 
-            translated_text = self.translator.translate(
-                transliterated_text,
-                src_lang=source_language_code,
-                tgt_lang=target_language_code
-            )
+            if cached_translation:
+
+                print("Cache hit")
+
+                translated_text = cached_translation
+
+            else:
+
+                print("Running model inference")
+
+                translated_text = self.translator.translate(
+                    transliterated_text,
+                    src_lang=source_language_code,
+                    tgt_lang=target_language_code
+                )
+
+                CacheManager.store_translation(
+                    cache_key,
+                    translated_text
+                )
 
 
         return {
