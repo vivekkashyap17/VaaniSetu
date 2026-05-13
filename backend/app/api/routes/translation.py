@@ -16,7 +16,6 @@ router = APIRouter()
 
 logger = setup_logger()
 
-pipeline = TranslationPipeline()
 
 
 @router.post(
@@ -28,6 +27,8 @@ async def translate_text(request: TranslationRequest):
     start_time = time.time()
 
     logger.info("Translation request received")
+
+    pipeline = TranslationPipeline()
 
     pipeline_output = pipeline.run(request.text)
 
