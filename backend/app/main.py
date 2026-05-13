@@ -9,6 +9,8 @@ from app.api.routes.translation import router as translation_router
 from app.core.config.settings import get_settings
 from app.core.logging.logger import setup_logger
 
+from app.core.models.model_manager import ModelManager
+
 
 settings = get_settings()
 
@@ -19,6 +21,8 @@ logger = setup_logger()
 async def lifespan(app: FastAPI):
 
     logger.info("Starting BhashaBridge backend")
+    
+    ModelManager.load_models()
 
     yield
 

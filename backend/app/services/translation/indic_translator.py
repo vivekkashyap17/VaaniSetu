@@ -1,4 +1,4 @@
-from transformers import pipeline
+from app.core.models.model_manager import ModelManager
 
 
 class IndicTranslator:
@@ -6,9 +6,8 @@ class IndicTranslator:
 
     def __init__(self):
 
-        self.translator_pipeline = pipeline(
-            task="translation",
-            model="facebook/nllb-200-distilled-600M"
+        self.translator_pipeline = (
+            ModelManager.get_translation_pipeline()
         )
 
 
