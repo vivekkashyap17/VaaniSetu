@@ -34,3 +34,5 @@ class TranslationResponse(BaseModel):
     processing_time: float
 
     transliterated_text: str
+
+    confidence_score: float
