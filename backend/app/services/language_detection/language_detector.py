@@ -1,3 +1,5 @@
+from pydoc import text
+
 from langdetect import detect, detect_langs
 
 
@@ -46,6 +48,15 @@ class LanguageDetector:
             "thanks"
         }
 
+    def is_bengali(self, text: str) -> bool:
+
+        for char in text:
+
+            if '\u0980' <= char <= '\u09FF':
+                return True
+
+            return False
+
 
     def is_devanagari(self, text: str) -> bool:
 
@@ -83,6 +94,9 @@ class LanguageDetector:
 
         if self.is_devanagari(text):
             return "hindi"
+        
+        if self.is_bengali(text):
+            return "bengali"
 
 
         if self.detect_roman_hindi(text):
