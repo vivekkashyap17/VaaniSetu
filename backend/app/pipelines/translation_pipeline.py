@@ -4,8 +4,7 @@ from app.services.language_detection.language_detector import LanguageDetector
 
 from app.services.transliteration.transliterator import Transliterator
 
-from app.services.translation.translator import Translator
-
+from app.services.translation.indic_translator import IndicTranslator
 
 class TranslationPipeline:
 
@@ -18,8 +17,7 @@ class TranslationPipeline:
 
         self.transliterator = Transliterator()
 
-        self.translator = Translator()
-
+        self.translator = IndicTranslator()
 
     def run(self, text: str):
 
@@ -47,8 +45,10 @@ class TranslationPipeline:
         if detected_language in ["hindi", "roman_hindi"]:
 
             translated_text = self.translator.translate(
-                transliterated_text
-            )
+    transliterated_text,
+    src_lang="hin_Deva",
+    tgt_lang="eng_Latn"
+)
 
 
         return {
