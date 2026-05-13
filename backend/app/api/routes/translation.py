@@ -11,6 +11,8 @@ from app.schemas.translation import (
 
 from app.pipelines.translation_pipeline import TranslationPipeline
 
+from app.utils.async_inference import run_inference_async
+
 
 router = APIRouter()
 
@@ -30,8 +32,10 @@ async def translate_text(request: TranslationRequest):
 
     pipeline = TranslationPipeline()
 
-    pipeline_output = pipeline.run(request.text)
-
+    pipeline_output = await run_inference_async(
+        pipeline.run,
+        request.text
+)
     processed_text = pipeline_output["processed_text"]
 
     detected_language = pipeline_output["detected_language"]
