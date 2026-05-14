@@ -13,6 +13,8 @@ from app.pipelines.translation_pipeline import TranslationPipeline
 
 from app.utils.async_inference import run_inference_async
 
+from app.core.analytics.analytics_manager import AnalyticsManager
+
 
 router = APIRouter()
 
@@ -48,7 +50,15 @@ async def translate_text(request: TranslationRequest):
 
     confidence_score = pipeline_output["confidence_score"]
 
+    cache_hit = pipeline_output["cache_hit"]
+
     processing_time = round(time.time() - start_time, 4)
+
+    AnalyticsManager.record_request(
+    language=detected_language,
+    latency=processing_time,
+    cache_hit=cache_hit
+)
 
     return TranslationResponse(
         original_text=request.text,
