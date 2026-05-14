@@ -90,7 +90,11 @@ class TranslationPipeline:
             "punjabi"
         ]:
 
+            cache_hit = False
+
+
             if cached_translation:
+                cache_hit = True
 
                 print("Cache hit")
 
@@ -116,11 +120,13 @@ class TranslationPipeline:
         translated_text
     )
 )
+        
 
         return {
             "processed_text": processed_text,
             "detected_language": detected_language,
             "transliterated_text": transliterated_text,
             "translated_text": translated_text,
-            "confidence_score": confidence_score
+            "confidence_score": confidence_score,
+            "cache_hit": cache_hit
         }

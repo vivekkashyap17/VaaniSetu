@@ -11,6 +11,8 @@ from app.core.logging.logger import setup_logger
 
 from app.core.models.model_manager import ModelManager
 
+from app.api.routes.analytics import router as analytics_router
+
 
 settings = get_settings()
 
@@ -42,3 +44,5 @@ app.include_router(root_router, prefix="/api/v1")
 app.include_router(health_router, prefix="/api/v1")
 
 app.include_router(translation_router, prefix="/api/v1")
+
+app.include_router(analytics_router)
