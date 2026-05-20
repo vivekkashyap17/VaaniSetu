@@ -19,6 +19,10 @@ from app.core.analytics.analytics_manager import AnalyticsManager
 
 from app.db.repositories.translation_repository import TranslationRepository
 
+from app.core.vectorstore.embedding_manager import EmbeddingManager
+
+from app.core.vectorstore.faiss_manager import FAISSManager
+
 
 router = APIRouter()
 
@@ -71,6 +75,15 @@ async def translate_text(request: TranslationRequest):
     detected_language=detected_language,
     confidence_score=confidence_score,
     processing_time=processing_time
+)
+    
+    embedding = EmbeddingManager.generate_embedding(
+    translated_output
+)
+
+    FAISSManager.add_embedding(
+    embedding,
+    translated_output
 )
 
     return TranslationResponse(

@@ -15,6 +15,12 @@ from app.api.routes.analytics import router as analytics_router
 
 from app.db.init_db import initialize_database
 
+from app.core.vectorstore.embedding_manager import EmbeddingManager
+
+from app.core.vectorstore.faiss_manager import FAISSManager
+
+from app.api.routes.search import router as search_router
+
 
 settings = get_settings()
 
@@ -29,6 +35,10 @@ async def lifespan(app: FastAPI):
     ModelManager.load_models()
 
     initialize_database()
+
+    EmbeddingManager.load_embedding_model()
+
+    FAISSManager.initialize_index()
 
     yield
 
@@ -50,3 +60,5 @@ app.include_router(health_router, prefix="/api/v1")
 app.include_router(translation_router, prefix="/api/v1")
 
 app.include_router(analytics_router)
+
+app.include_router(search_router)
