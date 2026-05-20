@@ -1,0 +1,12 @@
+{
+  "text": "मेरा नाम विवेक है",
+  "source_language": "auto",
+  "target_language": "english"
+}
+
+
+{
+  "text": "আমার নাম রাহুল",
+  "source_language": "auto",
+  "target_language": "english"
+}
