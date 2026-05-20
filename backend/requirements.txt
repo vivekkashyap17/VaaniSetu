@@ -11,6 +11,7 @@ certifi==2026.4.22
 charset-normalizer==3.4.7
 click==8.3.3
 docutils==0.22.4
+faiss-cpu==1.13.2
 fastapi==0.136.1
 filelock==3.25.2
 fsspec==2026.2.0
@@ -51,6 +52,9 @@ roman==5.2
 roman-numerals==4.1.0
 sacremoses==0.1.1
 safetensors==0.7.0
+scikit-learn==1.8.0
+scipy==1.17.1
+sentence-transformers==5.5.1
 sentencepiece==0.2.1
 shellingham==1.5.4
 six==1.17.0
@@ -68,6 +72,7 @@ sphinxcontrib-serializinghtml==2.0.0
 SQLAlchemy==2.0.49
 starlette==1.0.0
 sympy==1.14.0
+threadpoolctl==3.6.0
 tokenizers==0.19.1
 toml==0.10.2
 torch==2.11.0+cpu
