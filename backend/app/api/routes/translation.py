@@ -1,5 +1,7 @@
 import time
 
+from requests import request
+
 from fastapi import APIRouter
 
 from app.core.logging.logger import setup_logger
@@ -14,6 +16,8 @@ from app.pipelines.translation_pipeline import TranslationPipeline
 from app.utils.async_inference import run_inference_async
 
 from app.core.analytics.analytics_manager import AnalyticsManager
+
+from app.db.repositories.translation_repository import TranslationRepository
 
 
 router = APIRouter()
@@ -53,11 +57,20 @@ async def translate_text(request: TranslationRequest):
     cache_hit = pipeline_output["cache_hit"]
 
     processing_time = round(time.time() - start_time, 4)
+    
 
     AnalyticsManager.record_request(
     language=detected_language,
     latency=processing_time,
     cache_hit=cache_hit
+)
+    
+    TranslationRepository.save_translation(
+    original_text=request.text,
+    translated_text=translated_output,
+    detected_language=detected_language,
+    confidence_score=confidence_score,
+    processing_time=processing_time
 )
 
     return TranslationResponse(

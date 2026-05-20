@@ -13,6 +13,8 @@ from app.core.models.model_manager import ModelManager
 
 from app.api.routes.analytics import router as analytics_router
 
+from app.db.init_db import initialize_database
+
 
 settings = get_settings()
 
@@ -25,6 +27,8 @@ async def lifespan(app: FastAPI):
     logger.info("Starting BhashaBridge backend")
     
     ModelManager.load_models()
+
+    initialize_database()
 
     yield
 
