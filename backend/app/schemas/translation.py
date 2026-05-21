@@ -38,5 +38,7 @@ class TranslationResponse(BaseModel):
     confidence_score: float
 
     retrieved_contexts: list
-    
+
     semantic_context: str
+
+    refined_translation: str
