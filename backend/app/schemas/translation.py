@@ -36,3 +36,7 @@ class TranslationResponse(BaseModel):
     transliterated_text: str
 
     confidence_score: float
+
+    retrieved_contexts: list
+    
+    semantic_context: str

@@ -60,6 +60,14 @@ async def translate_text(request: TranslationRequest):
 
     cache_hit = pipeline_output["cache_hit"]
 
+    retrieved_contexts = (
+    pipeline_output["retrieved_contexts"]
+)
+
+    semantic_context = (
+    pipeline_output["semantic_context"]
+)
+
     processing_time = round(time.time() - start_time, 4)
     
 
@@ -92,6 +100,8 @@ async def translate_text(request: TranslationRequest):
         transliterated_text=transliterated_text,
         detected_language=detected_language,
         confidence_score=confidence_score,
+        retrieved_contexts=retrieved_contexts,
+        semantic_context=semantic_context,
         target_language=request.target_language,
         processing_time=processing_time
     )
