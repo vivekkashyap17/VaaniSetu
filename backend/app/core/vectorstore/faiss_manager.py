@@ -61,11 +61,14 @@ class FAISSManager:
 
         for idx in indices[0]:
 
-            if idx < len(cls.stored_texts):
+             if (
+        idx >= 0
+        and idx < len(cls.stored_texts)
+    ):
 
                 results.append(
-                    cls.stored_texts[idx]
-                )
+            cls.stored_texts[idx]
+        )
 
 
         return results

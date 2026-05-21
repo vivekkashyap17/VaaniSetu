@@ -12,6 +12,10 @@ from app.core.cache.cache_manager import CacheManager
 
 from app.services.evaluation.quality_evaluator import QualityEvaluator
 
+from app.services.rag.retrieval_service import RetrievalService
+
+from app.services.rag.context_builder import ContextBuilder
+
 
 class TranslationPipeline:
 
@@ -29,6 +33,10 @@ class TranslationPipeline:
         self.language_mapper = LanguageMapper()
 
         self.quality_evaluator = QualityEvaluator()
+
+        self.retrieval_service = RetrievalService()
+
+        self.context_builder = ContextBuilder()
 
 
     def run(self, text: str):
@@ -66,6 +74,17 @@ class TranslationPipeline:
             )
         )
 
+        retrieved_contexts = (
+    self.retrieval_service.retrieve_similar_contexts(
+        transliterated_text
+    )
+)
+
+        semantic_context = (
+    self.context_builder.build_translation_context(
+        retrieved_contexts
+    )
+)
 
         cache_key = CacheManager.generate_cache_key(
             transliterated_text,
@@ -128,5 +147,7 @@ class TranslationPipeline:
             "transliterated_text": transliterated_text,
             "translated_text": translated_text,
             "confidence_score": confidence_score,
-            "cache_hit": cache_hit
+            "cache_hit": cache_hit,
+            "retrieved_contexts": retrieved_contexts,
+            "semantic_context": semantic_context
         }
