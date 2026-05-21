@@ -67,6 +67,10 @@ async def translate_text(request: TranslationRequest):
     semantic_context = (
     pipeline_output["semantic_context"]
 )
+    
+    refined_translation = (
+    pipeline_output["refined_translation"]
+)
 
     processing_time = round(time.time() - start_time, 4)
     
@@ -97,6 +101,7 @@ async def translate_text(request: TranslationRequest):
     return TranslationResponse(
         original_text=request.text,
         translated_text=translated_output,
+        refined_translation=refined_translation,
         transliterated_text=transliterated_text,
         detected_language=detected_language,
         confidence_score=confidence_score,

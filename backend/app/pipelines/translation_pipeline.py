@@ -16,6 +16,8 @@ from app.services.rag.retrieval_service import RetrievalService
 
 from app.services.rag.context_builder import ContextBuilder
 
+from app.services.llm.translation_refiner import TranslationRefiner
+
 
 class TranslationPipeline:
 
@@ -62,6 +64,7 @@ class TranslationPipeline:
         translated_text = transliterated_text
 
 
+
         source_language_code = (
             self.language_mapper.get_language_code(
                 detected_language
@@ -86,6 +89,14 @@ class TranslationPipeline:
     )
 )
 
+        refined_translation = (
+    TranslationRefiner.refine_translation(
+        original_text=transliterated_text,
+        translated_text=translated_text,
+        semantic_context=semantic_context
+    )
+)
+        
         cache_key = CacheManager.generate_cache_key(
             transliterated_text,
             "english"
@@ -146,6 +157,7 @@ class TranslationPipeline:
             "detected_language": detected_language,
             "transliterated_text": transliterated_text,
             "translated_text": translated_text,
+            "refined_translation": refined_translation,
             "confidence_score": confidence_score,
             "cache_hit": cache_hit,
             "retrieved_contexts": retrieved_contexts,

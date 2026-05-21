@@ -21,6 +21,8 @@ from app.core.vectorstore.faiss_manager import FAISSManager
 
 from app.api.routes.search import router as search_router
 
+from app.services.llm.translation_refiner import TranslationRefiner
+
 
 settings = get_settings()
 
@@ -39,6 +41,8 @@ async def lifespan(app: FastAPI):
     EmbeddingManager.load_embedding_model()
 
     FAISSManager.initialize_index()
+
+    TranslationRefiner.load_refinement_model()
 
     yield
 
