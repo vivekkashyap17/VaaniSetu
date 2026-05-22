@@ -1,5 +1,7 @@
 from sentence_transformers import SentenceTransformer
 
+from app.core.model_management.device_manager import DeviceManager
+
 
 class EmbeddingManager:
 
@@ -14,8 +16,13 @@ class EmbeddingManager:
 
             print("Loading embedding model...")
 
+            device = DeviceManager.get_device()
+
+            print(f"Embedding model using: {device}")
+
             cls.embedding_model = SentenceTransformer(
-                "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+                "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+                device=device
             )
 
             print("Embedding model loaded.")
