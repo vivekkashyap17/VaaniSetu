@@ -1,4 +1,8 @@
+import time
+
 from transformers import pipeline
+
+from app.core.model_management.device_manager import DeviceManager
 
 
 class TranslationRefiner:
@@ -14,9 +18,16 @@ class TranslationRefiner:
 
             print("Loading LLM refinement model...")
 
+            device = DeviceManager.get_device()
+
+            print(f"Using device: {device}")
+
+            pipeline_device = 0 if device == "cuda" else -1
+
             cls.refinement_pipeline = pipeline(
                 task="text2text-generation",
-                model="google/flan-t5-base"
+                model="google/flan-t5-base",
+                device=pipeline_device
             )
 
             print("LLM refinement model loaded.")
@@ -46,9 +57,18 @@ class TranslationRefiner:
         """
 
 
+        start_time = time.time()
+
         result = cls.refinement_pipeline(
             prompt,
             max_new_tokens=64
+        )
+
+        end_time = time.time()
+
+        print(
+            f"LLM refinement time: "
+            f"{round(end_time - start_time, 2)} seconds"
         )
 
 
