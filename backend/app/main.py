@@ -23,6 +23,14 @@ from app.api.routes.search import router as search_router
 
 from app.services.llm.translation_refiner import TranslationRefiner
 
+from slowapi.errors import RateLimitExceeded
+
+from slowapi.middleware import SlowAPIMiddleware
+
+from slowapi.extension import _rate_limit_exceeded_handler
+
+from app.core.security.rate_limiter import limiter
+
 
 settings = get_settings()
 
@@ -55,6 +63,16 @@ app = FastAPI(
     description="AI-powered multilingual translation backend for Indian local languages and dialects",
     lifespan=lifespan
 )
+
+
+app.state.limiter = limiter
+
+app.add_exception_handler(
+    RateLimitExceeded,
+    _rate_limit_exceeded_handler
+)
+
+app.add_middleware(SlowAPIMiddleware)
 
 
 app.include_router(root_router, prefix="/api/v1")

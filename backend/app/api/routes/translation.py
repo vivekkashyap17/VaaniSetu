@@ -23,6 +23,14 @@ from app.core.vectorstore.embedding_manager import EmbeddingManager
 
 from app.core.vectorstore.faiss_manager import FAISSManager
 
+from fastapi import Depends
+
+from fastapi import Request
+
+from app.core.security.api_key import verify_api_key
+
+from app.core.security.rate_limiter import limiter
+
 
 router = APIRouter()
 
@@ -34,7 +42,13 @@ logger = setup_logger()
     "/translate",
     response_model=TranslationResponse
 )
-async def translate_text(request: TranslationRequest):
+@limiter.limit("5/minute")
+
+async def translate_text(
+    request: Request,
+    translation_request: TranslationRequest,
+    api_key: str = Depends(verify_api_key)
+):
 
     start_time = time.time()
 
@@ -44,7 +58,7 @@ async def translate_text(request: TranslationRequest):
 
     pipeline_output = await run_inference_async(
         pipeline.run,
-        request.text
+        translation_request.text
 )
     
 
@@ -82,7 +96,7 @@ async def translate_text(request: TranslationRequest):
 )
     
     TranslationRepository.save_translation(
-    original_text=request.text,
+    original_text=translation_request.text,
     translated_text=translated_output,
     detected_language=detected_language,
     confidence_score=confidence_score,
@@ -99,7 +113,7 @@ async def translate_text(request: TranslationRequest):
 )
 
     return TranslationResponse(
-        original_text=request.text,
+        original_text=translation_request.text,
         translated_text=translated_output,
         refined_translation=refined_translation,
         transliterated_text=transliterated_text,
@@ -107,6 +121,6 @@ async def translate_text(request: TranslationRequest):
         confidence_score=confidence_score,
         retrieved_contexts=retrieved_contexts,
         semantic_context=semantic_context,
-        target_language=request.target_language,
+        target_language=translation_request.target_language,
         processing_time=processing_time
     )
