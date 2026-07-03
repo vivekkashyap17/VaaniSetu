@@ -101,6 +101,9 @@ class TranslationPipeline:
         )
 
 
+        cache_hit = False
+
+
         if detected_language in [
             "hindi",
             "roman_hindi",
@@ -111,9 +114,6 @@ class TranslationPipeline:
             "gujarati",
             "punjabi"
         ]:
-
-            cache_hit = False
-
 
             if cached_translation:
                 cache_hit = True
