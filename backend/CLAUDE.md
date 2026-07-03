@@ -6,7 +6,7 @@ System architecture blueprint and token-saving caching guardrails for Claude Cod
 - **Install Deps**: `pip install -r requirements.txt` (Run from `backend/` inside active `.venv`)
 - **Run API**: `uvicorn app.main:app --reload`
 - **Manual Test**: Use `example.txt` request payloads via `POST /api/v1/translate` with header `X-API-Key: <key>`
-- **Framework**: No formal testing framework (e.g., pytest) is configured. All validation is manual.
+- **Unit Tests**: `pytest` (dev dependency in `requirements-dev.txt`; install via `pip install -r requirements-dev.txt`). Run `pytest` from `backend/`. Fast tests in `tests/` cover language detection/mapping, cache, preprocessing, quality scoring, transliteration, API-key auth, and the refinement fallback — none load ML models (config env is stubbed in `tests/conftest.py`). Reserve the `integration` marker for model-loading tests. Heavy end-to-end pipeline validation is still manual (see below).
 
 ## 🏗 System Architecture & Lifecycles
 - **Working Root**: The `backend/` directory is the working root. Sibling `frontend/` is out of scope.
@@ -22,14 +22,15 @@ System architecture blueprint and token-saving caching guardrails for Claude Cod
    - **Language Detection**: Rule-first Unicode checks for Devanagari/Bengali -> Keyword matches for roman-Hindi -> `langdetect` fallback (0.80 floor). Unknown defaults to `hin_Deva`.
    - **Transliteration**: Converts `roman_hindi` string inputs directly into Devanagari script.
    - **RAG Retrieval**: Vectorizes text using `SentenceTransformers` -> Queries in-memory `IndexFlatL2` FAISS index (Dimension: **384**) linked to a parallel python list `stored_texts` -> Builds context string.
-   - **LLM Refinement**: Runs `TranslationRefiner.refine_translation` using original text + semantic context string.
    - **Translation Engine**: Supported languages hit `CacheManager` dict or process via `IndicTranslator` (Target code is always English `eng_Latn`).
+   - **LLM Refinement**: Runs `TranslationRefiner.refine_translation` on the **English translated text** + semantic context string. Falls back to the translated text if the model returns an empty string.
 4. **Data Persistence**: Route logs counters via class-level `AnalyticsManager`, saves records to SQLite (`bhashabridge.db`) via SQLAlchemy with `check_same_thread=False`, and appends live data to the FAISS vector space.
 
-## ⚠️ Known Codebase Bugs & Quirks
-- **Refinement Ordering**: In `TranslationPipeline.run()`, step 3 (Refinement) deliberately runs *before* step 4 (Translation). Refinement processes raw pre-translation text. Do not reverse this sequence.
-- **Unbound Cache Variable**: The `cache_hit` variable is only set within the supported-language block. If an unsupported language hits the route, `cache_hit` is unbound and crashes the service response.
-- **Missing Imports**: `api_key.py` references an undefined global variable `API_KEY` instead of importing and reading `settings.API_KEY`. Fix this using the config module.
+## ⚠️ Codebase Quirks & Current Behavior
+- **Refinement Ordering**: Refinement runs *after* translation, on the English output. flan-t5 has no Indic vocabulary, so refining pre-translation Devanagari produced whitespace-only output; a fallback returns the translated text if refinement comes back empty.
+- **Cache Hit Flag**: `cache_hit` is initialized to `False` before the supported-language block, so unsupported languages no longer crash the response.
+- **API Key**: `api_key.py` reads `settings.API_KEY` from the config module.
+- **Unsupported Languages**: If `detected_language` is not in the supported set, `translated_text` is returned untranslated (passthrough). Target is always English — any-to-any direction and IndicTrans2 routing are planned, not yet implemented.
 
 ## 📏 Strict Code Style Guardrails
 - **Modular Layout**: Keep API routes thin. Business logic and pipeline handling belong strictly in services.
