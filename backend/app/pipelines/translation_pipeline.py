@@ -41,7 +41,7 @@ class TranslationPipeline:
         self.context_builder = ContextBuilder()
 
 
-    def run(self, text: str):
+    def run(self, text: str, target_language: str = "english"):
 
         processed_text = self.preprocessor.preprocess(text)
 
@@ -72,8 +72,8 @@ class TranslationPipeline:
         )
 
         target_language_code = (
-            self.language_mapper.get_language_code(
-                "en"
+            self.language_mapper.get_target_code(
+                target_language
             )
         )
 
@@ -91,7 +91,7 @@ class TranslationPipeline:
 
         cache_key = CacheManager.generate_cache_key(
             transliterated_text,
-            "english"
+            target_language_code
         )
 
         cached_translation = (
@@ -104,16 +104,13 @@ class TranslationPipeline:
         cache_hit = False
 
 
-        if detected_language in [
-            "hindi",
-            "roman_hindi",
-            "bengali",
-            "tamil",
-            "telugu",
-            "marathi",
-            "gujarati",
-            "punjabi"
-        ]:
+        translatable = (
+            detected_language != "unknown"
+            and source_language_code != target_language_code
+        )
+
+
+        if translatable:
 
             if cached_translation:
                 cache_hit = True
@@ -137,7 +134,12 @@ class TranslationPipeline:
                     translated_text
                 )
 
-        refined_translation = (
+        refined_translation = translated_text
+
+
+        if translatable and target_language_code == "eng_Latn":
+
+            refined_translation = (
     TranslationRefiner.refine_translation(
         translated_text=translated_text,
         semantic_context=semantic_context

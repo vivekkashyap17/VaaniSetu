@@ -47,3 +47,19 @@ class TestLanguageMapper:
 
     def test_unknown_language_defaults_to_hindi(self):
         assert self.mapper.get_language_code("klingon") == "hin_Deva"
+
+    def test_langdetect_iso_codes_map_to_nllb(self):
+        assert self.mapper.get_language_code("fr") == "fra_Latn"
+        assert self.mapper.get_language_code("ta") == "tam_Taml"
+
+    def test_target_code_known_names(self):
+        assert self.mapper.get_target_code("english") == "eng_Latn"
+        assert self.mapper.get_target_code("tamil") == "tam_Taml"
+        assert self.mapper.get_target_code("french") == "fra_Latn"
+
+    def test_target_code_is_case_and_space_insensitive(self):
+        assert self.mapper.get_target_code("  English ") == "eng_Latn"
+        assert self.mapper.get_target_code("TAMIL") == "tam_Taml"
+
+    def test_target_code_unknown_defaults_to_english(self):
+        assert self.mapper.get_target_code("klingon") == "eng_Latn"
