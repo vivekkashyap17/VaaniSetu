@@ -3,8 +3,9 @@ from fastapi import HTTPException
 from fastapi import status
 
 
-API_KEY = "BHASHABRIDGE_SECRET_KEY"
+from app.core.config.settings import get_settings
 
+settings = get_settings()
 
 async def verify_api_key(
 
@@ -12,7 +13,7 @@ async def verify_api_key(
 
 ):
 
-    if x_api_key != API_KEY:
+    if x_api_key != settings.API_KEY:
 
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
