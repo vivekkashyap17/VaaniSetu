@@ -40,18 +40,14 @@ class TranslationRefiner:
     @classmethod
     def refine_translation(
         cls,
-        original_text: str,
         translated_text: str,
         semantic_context: str
     ) -> str:
 
         prompt = f"""
-        Improve the following translation.
+        Improve the following English translation.
 
-        Original Text:
-        {original_text}
-
-        Initial Translation:
+        Translation:
         {translated_text}
 
         Semantic Context:
@@ -77,5 +73,13 @@ class TranslationRefiner:
 
 
         refined_text = result[0]["generated_text"]
+
+
+        if refined_text.strip() == "":
+
+            print("Refinement produced empty output; falling back to translated text")
+
+            return translated_text
+
 
         return refined_text

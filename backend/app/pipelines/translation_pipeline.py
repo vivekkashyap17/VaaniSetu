@@ -89,14 +89,6 @@ class TranslationPipeline:
     )
 )
 
-        refined_translation = (
-    TranslationRefiner.refine_translation(
-        original_text=transliterated_text,
-        translated_text=translated_text,
-        semantic_context=semantic_context
-    )
-)
-        
         cache_key = CacheManager.generate_cache_key(
             transliterated_text,
             "english"
@@ -109,6 +101,9 @@ class TranslationPipeline:
         )
 
 
+        cache_hit = False
+
+
         if detected_language in [
             "hindi",
             "roman_hindi",
@@ -119,9 +114,6 @@ class TranslationPipeline:
             "gujarati",
             "punjabi"
         ]:
-
-            cache_hit = False
-
 
             if cached_translation:
                 cache_hit = True
@@ -144,6 +136,14 @@ class TranslationPipeline:
                     cache_key,
                     translated_text
                 )
+
+        refined_translation = (
+    TranslationRefiner.refine_translation(
+        translated_text=translated_text,
+        semantic_context=semantic_context
+    )
+)
+
         confidence_score = (
     self.quality_evaluator.evaluate_translation_confidence(
         transliterated_text,
