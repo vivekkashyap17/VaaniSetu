@@ -4,9 +4,12 @@ from sqlalchemy.orm import declarative_base
 
 from sqlalchemy.orm import sessionmaker
 
+from app.core.config.settings import get_settings
 
-DATABASE_URL = "sqlite:///./bhashabridge.db"
+settings = get_settings()
 
+
+DATABASE_URL = settings.DATABASE_URL
 
 engine = create_engine(
     DATABASE_URL,

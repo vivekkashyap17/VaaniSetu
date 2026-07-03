@@ -1,18 +1,33 @@
-from pydantic_settings import BaseSettings
 from functools import lru_cache
+
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
 
-    APP_NAME: str = "BhashaBridge"
+    APP_NAME: str
 
-    APP_VERSION: str = "1.0.0"
+    APP_VERSION: str
 
-    DEBUG: bool = True
+    DEBUG: bool
 
-    HOST: str = "0.0.0.0"
+    HOST: str
 
-    PORT: int = 8000
+    PORT: int
+
+    PROJECT_NAME: str
+
+    API_KEY: str
+
+    DATABASE_URL: str
+
+    TRANSLATION_MODEL: str
+
+    EMBEDDING_MODEL: str
+
+    REFINEMENT_MODEL: str
+
+    RATE_LIMIT: str
 
     class Config:
         env_file = ".env"
@@ -20,4 +35,5 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings():
+
     return Settings()

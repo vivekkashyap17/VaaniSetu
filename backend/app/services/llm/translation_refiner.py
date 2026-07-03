@@ -4,6 +4,10 @@ from transformers import pipeline
 
 from app.core.model_management.device_manager import DeviceManager
 
+from app.core.config.settings import get_settings
+
+settings = get_settings()
+
 
 class TranslationRefiner:
 
@@ -26,7 +30,7 @@ class TranslationRefiner:
 
             cls.refinement_pipeline = pipeline(
                 task="text2text-generation",
-                model="google/flan-t5-base",
+                model=settings.REFINEMENT_MODEL,
                 device=pipeline_device
             )
 
