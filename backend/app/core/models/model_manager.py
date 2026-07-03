@@ -1,5 +1,9 @@
 from transformers import pipeline
 
+from app.core.config.settings import get_settings
+
+settings = get_settings()
+
 
 class ModelManager:
 
@@ -16,7 +20,7 @@ class ModelManager:
 
             cls.translator_pipeline = pipeline(
                 task="translation",
-                model="facebook/nllb-200-distilled-600M"
+                model=settings.TRANSLATION_MODEL
             )
 
             print("Translation model loaded.")
