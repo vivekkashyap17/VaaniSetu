@@ -31,6 +31,8 @@ class Settings(BaseSettings):
 
     RATE_LIMIT: str
 
+    ALLOWED_ORIGINS: str
+
     class Config:
         env_file = ".env"
 

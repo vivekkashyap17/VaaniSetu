@@ -22,6 +22,7 @@ _TEST_ENV = {
     "REFINEMENT_MODEL": "google/flan-t5-base",
     "INDICTRANS2_INDIC_EN_MODEL": "ai4bharat/indictrans2-indic-en-dist-200M",
     "RATE_LIMIT": "5/minute",
+    "ALLOWED_ORIGINS": "*",
 }
 
 for _key, _value in _TEST_ENV.items():

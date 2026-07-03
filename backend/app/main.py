@@ -23,6 +23,8 @@ from app.api.routes.search import router as search_router
 
 from app.services.llm.translation_refiner import TranslationRefiner
 
+from fastapi.middleware.cors import CORSMiddleware
+
 from slowapi.errors import RateLimitExceeded
 
 from slowapi.middleware import SlowAPIMiddleware
@@ -62,6 +64,21 @@ app = FastAPI(
     version=settings.APP_VERSION,
     description="AI-powered multilingual translation backend for Indian local languages and dialects",
     lifespan=lifespan
+)
+
+
+allowed_origins = [
+    origin.strip()
+    for origin in settings.ALLOWED_ORIGINS.split(",")
+    if origin.strip()
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
