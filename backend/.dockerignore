@@ -1,0 +1,20 @@
+# Virtualenvs and caches
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# VCS
+.git/
+.gitignore
+
+# Local runtime artifacts and secrets
+*.db
+.env
+*.log
+
+# Tests and dev-only files (not needed in the runtime image)
+tests/
+requirements-dev.txt
+pytest.ini

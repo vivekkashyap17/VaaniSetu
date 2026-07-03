@@ -5,6 +5,7 @@ System architecture blueprint and token-saving caching guardrails for Claude Cod
 ## 🛠 Development Workflow Commands
 - **Install Deps**: `pip install -r requirements.txt` (Run from `backend/` inside active `.venv`)
 - **Run API**: `uvicorn app.main:app --reload`
+- **Run via Docker**: `export HF_TOKEN=<token>` then `docker compose up --build` (from `backend/`). The image is CPU-only; `docker-compose.yml` mounts the host HF cache (`~/.cache/huggingface`) so models aren't re-downloaded, reads config from `.env`, and serves on `:8000`. `.env` is never baked into the image (see `.dockerignore`); copy `.env.example` to `.env` for a fresh setup.
 - **Manual Test**: Use `example.txt` request payloads via `POST /api/v1/translate` with header `X-API-Key: <key>`
 - **Unit Tests**: `pytest` (dev dependency in `requirements-dev.txt`; install via `pip install -r requirements-dev.txt`). Run `pytest` from `backend/`. Fast tests in `tests/` cover language detection/mapping, cache, preprocessing, quality scoring, transliteration, API-key auth, and the refinement fallback — none load ML models (config env is stubbed in `tests/conftest.py`). Reserve the `integration` marker for model-loading tests. Heavy end-to-end pipeline validation is still manual (see below).
 

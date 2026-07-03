@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: .
+    image: bhashabridge-backend
+    ports:
+      - "8000:8000"
+    # App config (APP_NAME, API_KEY, model ids, etc.) is read from .env on the
+    # host at `up` time and injected as environment variables — .env is never
+    # baked into the image.
+    env_file:
+      - .env
+    environment:
+      # Needed to download the gated IndicTrans2 model; harmless once cached.
+      - HF_TOKEN=${HF_TOKEN:-}
+    volumes:
+      # Reuse the host's Hugging Face model cache so the ~5 GB of models are
+      # not re-downloaded and the image stays small.
+      - ${HOME}/.cache/huggingface:/root/.cache/huggingface
+    restart: unless-stopped
