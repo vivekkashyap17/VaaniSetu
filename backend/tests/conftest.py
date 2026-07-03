@@ -20,6 +20,7 @@ _TEST_ENV = {
     "TRANSLATION_MODEL": "facebook/nllb-200-distilled-600M",
     "EMBEDDING_MODEL": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
     "REFINEMENT_MODEL": "google/flan-t5-base",
+    "INDICTRANS2_INDIC_EN_MODEL": "ai4bharat/indictrans2-indic-en-dist-200M",
     "RATE_LIMIT": "5/minute",
 }
 

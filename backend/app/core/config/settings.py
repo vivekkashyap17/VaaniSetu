@@ -27,6 +27,8 @@ class Settings(BaseSettings):
 
     REFINEMENT_MODEL: str
 
+    INDICTRANS2_INDIC_EN_MODEL: str
+
     RATE_LIMIT: str
 
     class Config:

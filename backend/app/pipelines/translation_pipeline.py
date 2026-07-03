@@ -4,7 +4,7 @@ from app.services.language_detection.language_detector import LanguageDetector
 
 from app.services.transliteration.transliterator import Transliterator
 
-from app.services.translation.indic_translator import IndicTranslator
+from app.services.translation.translation_router import TranslationRouter
 
 from app.services.language_detection.language_mapper import LanguageMapper
 
@@ -30,7 +30,7 @@ class TranslationPipeline:
 
         self.transliterator = Transliterator()
 
-        self.translator = IndicTranslator()
+        self.translator = TranslationRouter()
 
         self.language_mapper = LanguageMapper()
 

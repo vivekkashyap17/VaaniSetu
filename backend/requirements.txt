@@ -26,6 +26,7 @@ idna==3.14
 imagesize==2.0.0
 indic-nlp-library==0.92
 indic_transliteration==2.3.82
+IndicTransToolkit==1.1.1
 Jinja2==3.1.6
 joblib==1.5.3
 langdetect==1.0.9
