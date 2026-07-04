@@ -1,4 +1,4 @@
-# CLAUDE.md - BhashaBridge
+# CLAUDE.md - VaaniSetu
 
 System architecture blueprint and token-saving caching guardrails for Claude Code.
 
@@ -27,7 +27,7 @@ System architecture blueprint and token-saving caching guardrails for Claude Cod
    - **RAG Retrieval**: Vectorizes text using `SentenceTransformers` -> Queries in-memory `IndexFlatL2` FAISS index (Dimension: **384**) linked to a parallel python list `stored_texts` -> Builds context string.
    - **Translation Engine**: Any-to-any via `TranslationRouter` (`app/services/translation/translation_router.py`), which picks the engine per (source, target): **IndicTrans2** (`IndicTrans2Translator`) for Indic→English, **NLLB** (`IndicTranslator`) for everything else. Both expose `translate(text, src_lang, tgt_lang)`. Same-language requests short-circuit (no model). Results cache in `CacheManager` keyed by target code. Target comes from the request's `target_language` (mapped via `LanguageMapper.get_target_code`); unknown targets default to English.
    - **LLM Refinement**: Runs `TranslationRefiner.refine_translation` on the **English translated text** + semantic context string. Falls back to the translated text if the model returns an empty string.
-4. **Data Persistence**: Route logs counters via class-level `AnalyticsManager`, saves records to SQLite (`bhashabridge.db`) via SQLAlchemy with `check_same_thread=False`, and appends live data to the FAISS vector space.
+4. **Data Persistence**: Route logs counters via class-level `AnalyticsManager`, saves records to SQLite (`vaanisetu.db`) via SQLAlchemy with `check_same_thread=False`, and appends live data to the FAISS vector space.
 
 ## ⚠️ Codebase Quirks & Current Behavior
 - **Refinement Ordering**: Refinement runs *after* translation, on the English output. flan-t5 has no Indic vocabulary, so refining pre-translation Devanagari produced whitespace-only output; a fallback returns the translated text if refinement comes back empty.
@@ -44,4 +44,4 @@ System architecture blueprint and token-saving caching guardrails for Claude Cod
 
 ## 🚫 Token Optimization Exclusions
 Claude Code must never index, scan, or read these directories. Add them to your context skip-list:
-- `.venv/` | `venv/` | `__pycache__/` | `.git/` | `node_modules/` | `bhashabridge.db` | `*.log`
+- `.venv/` | `venv/` | `__pycache__/` | `.git/` | `node_modules/` | `vaanisetu.db` | `*.log`

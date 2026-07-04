@@ -9,14 +9,14 @@ deterministically without depending on a local .env file. These override
 import os
 
 _TEST_ENV = {
-    "APP_NAME": "BhashaBridge-Test",
+    "APP_NAME": "VaaniSetu-Test",
     "APP_VERSION": "0.0.0",
     "DEBUG": "true",
     "HOST": "127.0.0.1",
     "PORT": "8000",
-    "PROJECT_NAME": "BhashaBridge",
+    "PROJECT_NAME": "VaaniSetu",
     "API_KEY": "test-secret-key",
-    "DATABASE_URL": "sqlite:///./test_bhashabridge.db",
+    "DATABASE_URL": "sqlite:///./test_vaanisetu.db",
     "TRANSLATION_MODEL": "facebook/nllb-200-distilled-600M",
     "EMBEDDING_MODEL": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
     "REFINEMENT_MODEL": "google/flan-t5-base",

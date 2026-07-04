@@ -1,5 +1,5 @@
 ---
-title: BhashaBridge Backend
+title: VaaniSetu Backend
 emoji: 🌉
 colorFrom: indigo
 colorTo: green
@@ -9,7 +9,7 @@ pinned: false
 license: mit
 ---
 
-# BhashaBridge Backend
+# VaaniSetu Backend
 
 Multilingual translation API for Indian languages and low-resource dialects.
 
@@ -18,4 +18,4 @@ Multilingual translation API for Indian languages and low-resource dialects.
 - **Endpoint**: `POST /api/v1/translate` with `{"text": "...", "source_language": "auto", "target_language": "hindi"}`.
 - **Health**: `GET /api/v1/health`.
 
-This Space is built from the [BhashaBridge repo](https://github.com/vivekkashyap17/BhashaBridge) `backend/` directory. It runs on the free CPU tier; the first request after an idle period is slow while the ~5 GB of models load.
+This Space is built from the [VaaniSetu repo](https://github.com/vivekkashyap17/BhashaBridge) `backend/` directory. It runs on the free CPU tier; the first request after an idle period is slow while the ~5 GB of models load.

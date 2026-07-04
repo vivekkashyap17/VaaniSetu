@@ -1,4 +1,4 @@
-# BhashaBridge frontend — build the Vite SPA, serve the static bundle via nginx.
+# VaaniSetu frontend — build the Vite SPA, serve the static bundle via nginx.
 FROM node:20-alpine AS build
 
 WORKDIR /app

@@ -42,7 +42,7 @@ logger = setup_logger()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
 
-    logger.info("Starting BhashaBridge backend")
+    logger.info("Starting VaaniSetu backend")
     
     ModelManager.load_models()
 
@@ -56,7 +56,7 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    logger.info("Shutting down BhashaBridge backend")
+    logger.info("Shutting down VaaniSetu backend")
 
 
 app = FastAPI(

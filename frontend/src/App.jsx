@@ -51,7 +51,7 @@ function App() {
     <div className="app">
       <header className="header">
         <h1>
-          Bhasha<span>Bridge</span>
+          Vaani<span>Setu</span>
         </h1>
         <p>Multilingual translation for Indian languages &amp; beyond</p>
       </header>

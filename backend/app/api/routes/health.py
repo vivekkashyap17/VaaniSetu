@@ -20,5 +20,5 @@ async def health_check():
 
     return HealthResponse(
         status="healthy",
-        service="BhashaBridge"
+        service="VaaniSetu"
     )

@@ -1,4 +1,4 @@
-# BhashaBridge backend — CPU-only inference image.
+# VaaniSetu backend — CPU-only inference image.
 FROM python:3.11-slim
 
 # Keep Python output unbuffered and skip .pyc files.

@@ -1,7 +1,7 @@
 services:
   backend:
     build: .
-    image: bhashabridge-backend
+    image: vaanisetu-backend
     ports:
       - "8000:8000"
     # App config (APP_NAME, API_KEY, model ids, etc.) is read from .env on the
@@ -26,8 +26,8 @@ services:
         # Baked into the SPA bundle at build time. The browser runs on the
         # host, so it reaches the backend via the published host port.
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
-        VITE_API_KEY: ${VITE_API_KEY:-BHASHABRIDGE_SECRET_KEY}
-    image: bhashabridge-frontend
+        VITE_API_KEY: ${VITE_API_KEY:-VAANISETU_SECRET_KEY}
+    image: vaanisetu-frontend
     ports:
       - "5173:80"
     depends_on:

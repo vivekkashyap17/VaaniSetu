@@ -1,11 +1,11 @@
-"""Create/update the BhashaBridge backend Hugging Face Space and deploy it.
+"""Create/update the VaaniSetu backend Hugging Face Space and deploy it.
 
 Usage (from backend/):
 
     export HF_WRITE_TOKEN=hf_...        # a WRITE-scoped token
     export APP_API_KEY=<your api key>   # the X-API-Key clients must send
     # optional overrides:
-    export SPACE_ID=<user>/bhashabridge-backend
+    export SPACE_ID=<user>/vaanisetu-backend
     export ALLOWED_ORIGINS="*"          # tighten to your Vercel URL later
     export HF_MODEL_TOKEN=hf_...        # token used inside the Space to pull
                                         # the gated IndicTrans2 model (defaults
@@ -32,13 +32,13 @@ README_PATH = BACKEND_DIR / "deploy" / "README-hf-space.md"
 
 # Non-secret config -> Space "variables". All required by settings.py.
 SPACE_VARIABLES = {
-    "APP_NAME": "BhashaBridge",
+    "APP_NAME": "VaaniSetu",
     "APP_VERSION": "1.0.0",
     "DEBUG": "False",
     "HOST": "0.0.0.0",
     "PORT": "8000",
-    "PROJECT_NAME": "BhashaBridge AI",
-    "DATABASE_URL": "sqlite:///./bhashabridge.db",
+    "PROJECT_NAME": "VaaniSetu AI",
+    "DATABASE_URL": "sqlite:///./vaanisetu.db",
     "TRANSLATION_MODEL": "facebook/nllb-200-distilled-600M",
     "EMBEDDING_MODEL": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
     "REFINEMENT_MODEL": "google/flan-t5-base",
@@ -63,7 +63,7 @@ def main():
 
     space_id = os.environ.get(
         "SPACE_ID",
-        f"{user}/bhashabridge-backend"
+        f"{user}/vaanisetu-backend"
     )
 
     print(f"Target Space: {space_id}")
@@ -101,7 +101,7 @@ def main():
             "requirements.txt",
             "Dockerfile",
         ],
-        commit_message="Deploy BhashaBridge backend",
+        commit_message="Deploy VaaniSetu backend",
     )
 
     api.upload_file(

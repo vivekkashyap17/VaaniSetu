@@ -8,4 +8,4 @@ def setup_logger():
         format="%(asctime)s | %(levelname)s | %(name)s | %(message)s"
     )
 
-    return logging.getLogger("BhashaBridge")
+    return logging.getLogger("VaaniSetu")
