@@ -59,7 +59,8 @@ async def translate_text(
     pipeline_output = await run_inference_async(
         pipeline.run,
         translation_request.text,
-        translation_request.target_language
+        translation_request.target_language,
+        translation_request.source_language
 )
     
 

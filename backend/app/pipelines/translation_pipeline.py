@@ -41,13 +41,40 @@ class TranslationPipeline:
         self.context_builder = ContextBuilder()
 
 
-    def run(self, text: str, target_language: str = "english"):
+    def run(
+        self,
+        text: str,
+        target_language: str = "english",
+        source_language: str = "auto"
+    ):
 
         processed_text = self.preprocessor.preprocess(text)
 
-        detected_language = self.language_detector.detect_language(
-            processed_text
-        )
+        source_language = (source_language or "auto").lower().strip()
+
+
+        if source_language != "auto":
+
+            detected_language = source_language
+
+            source_language_code = (
+                self.language_mapper.get_source_code(
+                    source_language
+                )
+            )
+
+        else:
+
+            detected_language = self.language_detector.detect_language(
+                processed_text
+            )
+
+            source_language_code = (
+                self.language_mapper.get_language_code(
+                    detected_language
+                )
+            )
+
 
         transliterated_text = processed_text
 
@@ -62,14 +89,6 @@ class TranslationPipeline:
 
 
         translated_text = transliterated_text
-
-
-
-        source_language_code = (
-            self.language_mapper.get_language_code(
-                detected_language
-            )
-        )
 
         target_language_code = (
             self.language_mapper.get_target_code(

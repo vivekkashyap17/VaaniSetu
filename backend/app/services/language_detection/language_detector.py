@@ -1,6 +1,32 @@
-from pydoc import text
+from langdetect import detect_langs
 
-from langdetect import detect, detect_langs
+
+# Unicode script ranges -> detected friendly label. Ordered by script block.
+SCRIPT_RANGES = [
+    ("bengali", 0x0980, 0x09FF),
+    ("punjabi", 0x0A00, 0x0A7F),
+    ("gujarati", 0x0A80, 0x0AFF),
+    ("odia", 0x0B00, 0x0B7F),
+    ("tamil", 0x0B80, 0x0BFF),
+    ("telugu", 0x0C00, 0x0C7F),
+    ("kannada", 0x0C80, 0x0CFF),
+    ("malayalam", 0x0D00, 0x0D7F),
+    ("urdu", 0x0600, 0x06FF),
+    ("hindi", 0x0900, 0x097F),
+]
+
+
+# langdetect ISO codes we trust as a fallback for latin/other scripts.
+SUPPORTED_ISO = {
+    "en",
+    "fr",
+    "es",
+    "de",
+    "ru",
+    "ar",
+    "zh-cn",
+    "zh",
+}
 
 
 class LanguageDetector:
@@ -33,39 +59,21 @@ class LanguageDetector:
             "aaj"
         }
 
-        self.english_keywords = {
-            "how",
-            "are",
-            "you",
-            "today",
-            "hello",
-            "what",
-            "where",
-            "when",
-            "good",
-            "morning",
-            "night",
-            "thanks"
-        }
 
-    def is_bengali(self, text: str) -> bool:
+    def detect_script(self, text: str) -> str:
 
+        # Devanagari is checked last so more specific Indic scripts win first,
+        # but any single matching character settles the script.
         for char in text:
 
-            if '\u0980' <= char <= '\u09FF':
-                return True
+            code_point = ord(char)
 
-            return False
+            for label, low, high in SCRIPT_RANGES:
 
+                if low <= code_point <= high:
+                    return label
 
-    def is_devanagari(self, text: str) -> bool:
-
-        for char in text:
-
-            if '\u0900' <= char <= '\u097F':
-                return True
-
-        return False
+        return ""
 
 
     def detect_roman_hindi(self, text: str) -> bool:
@@ -79,32 +87,16 @@ class LanguageDetector:
         return len(matched_words) >= 2
 
 
-    def detect_english(self, text: str) -> bool:
-
-        words = set(text.lower().split())
-
-        matched_words = words.intersection(
-            self.english_keywords
-        )
-
-        return len(matched_words) >= 2
-
-
     def detect_language(self, text: str) -> str:
 
-        if self.is_devanagari(text):
-            return "hindi"
-        
-        if self.is_bengali(text):
-            return "bengali"
+        script_label = self.detect_script(text)
+
+        if script_label:
+            return script_label
 
 
         if self.detect_roman_hindi(text):
             return "roman_hindi"
-
-
-        if self.detect_english(text):
-            return "en"
 
 
         try:
@@ -114,10 +106,13 @@ class LanguageDetector:
             top_prediction = predictions[0]
 
             if top_prediction.prob < 0.80:
-                return "unknown"
+                return "en"
+
+            if top_prediction.lang not in SUPPORTED_ISO:
+                return "en"
 
             return top_prediction.lang
 
         except Exception:
 
-            return "unknown"
+            return "en"
