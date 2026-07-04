@@ -1,31 +1,24 @@
 import { useState } from "react";
 import "./App.css";
 import { translateText } from "./api";
+import { LANGUAGE_GROUPS, titleCase } from "./languages";
 
-const TARGET_LANGUAGES = [
-  "english",
-  "hindi",
-  "bengali",
-  "tamil",
-  "telugu",
-  "marathi",
-  "gujarati",
-  "punjabi",
-  "kannada",
-  "malayalam",
-  "urdu",
-  "french",
-  "spanish",
-  "german",
-];
-
-function titleCase(value) {
-  return value.charAt(0).toUpperCase() + value.slice(1);
+function LanguageOptions() {
+  return LANGUAGE_GROUPS.map((group) => (
+    <optgroup key={group.label} label={group.label}>
+      {group.languages.map((lang) => (
+        <option key={lang} value={lang}>
+          {titleCase(lang)}
+        </option>
+      ))}
+    </optgroup>
+  ));
 }
 
 function App() {
   const [text, setText] = useState("");
-  const [targetLanguage, setTargetLanguage] = useState("english");
+  const [sourceLanguage, setSourceLanguage] = useState("auto");
+  const [targetLanguage, setTargetLanguage] = useState("hindi");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -40,7 +33,7 @@ function App() {
     setResult(null);
 
     try {
-      const data = await translateText(text, targetLanguage);
+      const data = await translateText(text, targetLanguage, sourceLanguage);
       setResult(data);
     } catch (err) {
       setError(err.message);
@@ -78,8 +71,23 @@ function App() {
 
         <div className="controls">
           <div className="field">
+            <label className="label" htmlFor="source">
+              From
+            </label>
+            <select
+              id="source"
+              className="select"
+              value={sourceLanguage}
+              onChange={(event) => setSourceLanguage(event.target.value)}
+            >
+              <option value="auto">Auto-detect</option>
+              <LanguageOptions />
+            </select>
+          </div>
+
+          <div className="field">
             <label className="label" htmlFor="target">
-              Translate to
+              To
             </label>
             <select
               id="target"
@@ -87,11 +95,7 @@ function App() {
               value={targetLanguage}
               onChange={(event) => setTargetLanguage(event.target.value)}
             >
-              {TARGET_LANGUAGES.map((lang) => (
-                <option key={lang} value={lang}>
-                  {titleCase(lang)}
-                </option>
-              ))}
+              <LanguageOptions />
             </select>
           </div>
 

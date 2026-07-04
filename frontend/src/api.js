@@ -1,7 +1,7 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 const API_KEY = import.meta.env.VITE_API_KEY || "";
 
-export async function translateText(text, targetLanguage) {
+export async function translateText(text, targetLanguage, sourceLanguage = "auto") {
   let response;
 
   try {
@@ -13,7 +13,7 @@ export async function translateText(text, targetLanguage) {
       },
       body: JSON.stringify({
         text,
-        source_language: "auto",
+        source_language: sourceLanguage,
         target_language: targetLanguage,
       }),
     });
