@@ -73,14 +73,6 @@ allowed_origins = [
     if origin.strip()
 ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 
 app.state.limiter = limiter
 
@@ -90,6 +82,19 @@ app.add_exception_handler(
 )
 
 app.add_middleware(SlowAPIMiddleware)
+
+
+# CORS is added LAST so it is the OUTERMOST middleware. This guarantees every
+# response — including SlowAPI 429s, errors, and preflight OPTIONS — carries
+# CORS headers; otherwise the browser blocks them and the frontend reports a
+# generic "could not reach the server".
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 app.include_router(root_router, prefix="/api/v1")
