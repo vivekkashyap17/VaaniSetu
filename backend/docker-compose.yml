@@ -26,7 +26,9 @@ services:
         # Baked into the SPA bundle at build time. The browser runs on the
         # host, so it reaches the backend via the published host port.
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
-        VITE_API_KEY: ${VITE_API_KEY:-VAANISETU_SECRET_KEY}
+        # Must match the backend API_KEY (from .env). Export VITE_API_KEY before
+        # `up` to override; the default matches .env.example's placeholder.
+        VITE_API_KEY: ${VITE_API_KEY:-change-me}
     image: vaanisetu-frontend
     ports:
       - "5173:80"
