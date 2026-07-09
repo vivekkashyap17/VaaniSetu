@@ -3,15 +3,6 @@
 Multilingual translation service for Indian languages — including low-resource
 regional dialects — powered by NLLB-200 and IndicTrans2.
 
-## 🔗 Live Demo
-
-| | URL |
-|---|---|
-| **Frontend** (Vercel) | _add your Vercel URL here_ |
-| **Backend API** (Hugging Face Space) | _add your Hugging Face Space URL here_ |
-
-> Interactive API docs are available at `<backend-url>/docs`.
-
 ## Overview
 
 VaaniSetu translates text between global languages, 19 major Indian languages,
