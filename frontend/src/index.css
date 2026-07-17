@@ -1,13 +1,13 @@
 :root {
-  --bg: #0f1117;
-  --panel: #181b23;
-  --panel-2: #1f2330;
-  --border: #2b3040;
-  --text: #e6e8ee;
-  --text-dim: #9aa1b1;
-  --accent: #7c5cff;
-  --accent-2: #4dd0e1;
-  --danger: #ff6b6b;
+  --bg: #0c0b0a;
+  --panel: #171614;
+  --panel-2: #201e1b;
+  --border: #2b2926;
+  --text: #ece9e4;
+  --text-dim: #9a968e;
+  --accent: #efeae2;
+  --accent-text: #171614;
+  --danger: #e0897f;
 
   font-family: system-ui, "Segoe UI", Roboto, sans-serif;
   color-scheme: dark;
@@ -22,7 +22,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(1200px 600px at 50% -10%, #1a1f2e 0%, var(--bg) 60%);
+  background: radial-gradient(1200px 600px at 50% -10%, #1a1815 0%, var(--bg) 60%);
   color: var(--text);
 }
 

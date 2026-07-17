@@ -1,16 +1,28 @@
-# React + Vite
+# VaaniSetu — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + Vite single-page app for the VaaniSetu translation service. See the
+[project README](../README.md) for the full overview.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+cp .env.example .env      # then set the values below
+npm run dev               # http://localhost:5173
+```
 
-## React Compiler
+## Environment Variables
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Name | Description |
+|------|-------------|
+| `VITE_API_BASE_URL` | Base URL of the backend API (e.g. `http://localhost:8000`) |
+| `VITE_API_KEY` | `X-API-Key` sent with requests — must match the backend `API_KEY` |
 
-## Expanding the Oxlint configuration
+> `VITE_API_KEY` is baked into the browser bundle at build time, so it is
+> public by design. Use a low-risk gate key, never a real secret.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Scripts
+
+- `npm run dev` — start the dev server with HMR
+- `npm run build` — production build to `dist/`
+- `npm run preview` — preview the production build

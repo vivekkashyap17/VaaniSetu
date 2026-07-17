@@ -18,7 +18,7 @@
 ### 1b. Deploy (run from `backend/`, inside the venv)
 ```bash
 export HF_WRITE_TOKEN=hf_xxx_your_write_token
-export APP_API_KEY=VAANISETU_SECRET_KEY        # the X-API-Key clients must send
+export APP_API_KEY=<your-api-key>              # the X-API-Key clients must send
 export ALLOWED_ORIGINS="*"                     # tighten to your Vercel URL later
 python deploy/deploy_hf_space.py
 ```
@@ -43,7 +43,7 @@ Check health: `GET https://<you>-vaanisetu-backend.hf.space/api/v1/health`
    | Name | Value |
    |------|-------|
    | `VITE_API_BASE_URL` | `https://<you>-vaanisetu-backend.hf.space` |
-   | `VITE_API_KEY` | `VAANISETU_SECRET_KEY` (same as `APP_API_KEY` above) |
+   | `VITE_API_KEY` | `<your-api-key>` (same value as `APP_API_KEY` above) |
 4. **Deploy**. Vercel gives you a URL like `https://vaanisetu.vercel.app`.
 
 ### 2a. (Optional) Lock CORS to your Vercel URL
